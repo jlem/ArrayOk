@@ -24,18 +24,29 @@ $config = [
 $aok = new Jlem\ArrayOk\ArrayOk($config);       // Builds a nested object graph of ArrayOk objects for each child array in $config
 
 
-// Getting values
+// Getting single values. All of these are valid.
+
+$aok->get('blah')                           // returns null (anything it doesn't find is always null)
+$aok->get('one')                            // returns an ArrayOk object since 'one' was an array
+$aok->get(['one'])                          // ... or use an array argument with object access
+$aok['one']                                 // ... or use array access
+$aok[['one']]                               // ... or use array argument with array access
+
+
+
+// Getting nested values. All of these are valid.
 
 $aok->get()                                 // returns the full array & object graph
-$aok->get('one')                            // returns an ArrayOk object since 'one' was an array
-$aok['one']                                 // array access equivalent
-$aok->get('one.two.three')                  // returns 'four', using dot notation
-$aok['one.two.three']                       // equivalent to the above
-$aok->get('one')->get('two')->get('three')  // do some chaining
-$aok['one']['two']['three']                 // equivalent to the above
-$aok->get('one')['two']->get('three')       // its A-Ok to get weird with it
-$aok->get('blah')                           // returns null (anything it doesn't find is always null)
 $aok->toArray()                             // returns full object graph as a plain array
+$aok->get('one.two.three')                  // returns 'four' using dot notation with object access
+$aok->get(['one', 'two', 'three'])          // ... or use an array argument with object access
+$aok['one.two.three']                       // ... or use dot notation argument with array access
+$aok[['one', 'two', 'three']]               // ... or use array argument with array access
+$aok['one']['two']['three']                 // ... or use chained array access
+$aok->get('one')->get('two')->get('three')  // ... or use chained object access
+$aok->get('one')['two']->get('three')       // ... or mix it up
+$aok['one.two']->get(['three'])             // ... mixing is A-Ok ;) just be careful about non-object returns (TODO: "safe mode" that returns null objects for safe chaining)
+
 
 
 // Mutating
@@ -51,7 +62,7 @@ $aok->remove('Foo')                         // removes the 'Foo' element from th
 
 // Sorting
 
-$aok->orderBy(['Foo', 'Hello', 'one'])      // explicitly changes the order of the array to match the given input array
+$aok->sortOrder(['Foo', 'Hello', 'one'])      // explicitly changes the order of the array to match the given input array
 
 
 // Misc
