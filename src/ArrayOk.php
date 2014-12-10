@@ -11,95 +11,127 @@ class ArrayOk implements ArrayAccess
         $this->constructRecursively($items);
     }
 
+
+    /**
+     * Returns the conctents of the entire array ok object, or the contents of a specific key
+     *
+     * @param mixed null|string|array $keys
+     * @access public
+     * @return mixed
+    */
+
     public function get($keys = null)
     {
         return ($keys) ? $this->getRecursively($keys) : $this->items;
     }
+
+
+    /**
+     * TODO 
+     *
+     * @param mixed $flag
+     * @access public
+     * @return void
+    */
 
     public function sortAZ($flag = SORT_REGULAR)
     {
         
     }
 
+
+    /**
+     * Allows you to explicitly set the order of the array using another array whose values match the keys of the current object's keys 
+     *
+     * @param array $input
+     * @access public
+     * @return array
+    */
+
     public function sortOrder(array $input)
     {
         return $this->items = array_replace(array_flip($input), $this->items);
     }
+
+
+    /**
+     * Prepends a new value to the beginning of the object 
+     *
+     * @param mixed $value
+     * @param mixed null|string $key
+     * @access public
+     * @return void
+    */
 
     public function prepend($value, $key = null)
     {
         $key ? $this->unshiftKey($key, $value) : $this->unshift($value);
     }
 
+
+    /**
+     * Appends a new value to the end of the object
+     *
+     * @param mixed $value
+     * @param mixed null|string $key
+     * @access public
+     * @return void
+    */
+
     public function append($value, $key = null) 
     {
         $key ? $this->pushKey($key, $value) : $this->push($value);
     }
+
+
+    /**
+     * Removes a single element from the object 
+     *
+     * @param string $key
+     * @access public
+     * @return void
+    */
 
     public function remove($key)
     {
         unset($this->items[$key]);
     }
 
+
+    /**
+     * Checks to see if the objet contains the given key 
+     *
+     * @param string $key
+     * @access public
+     * @return bool
+    */
+
     public function exists($key)
     {
         return isset($this->items[$key]);
     }
+
+
+    /**
+     * Checks to see if the given value/objet is also an ArrayOk object 
+     *
+     * @param mixed $object
+     * @access public
+     * @return bool
+    */
 
     public function isAok($object) 
     {
         return $object instanceof $this; 
     }
 
-    private function set($value) 
-    {
-        return is_array($value) ? new ArrayOk($value) : $value;
-    }
 
-    private function push($value)
-    {
-        $this->items[] = $this->set($value);
-    }
-
-    private function pushKey($key, $value)
-    {
-        $this->items[$key] = $this->set($value);
-    }
-
-    private function unshift($value)
-    {
-        array_unshift($this->items, $this->set($value));
-    }
-
-    private function unshiftKey($key, $value)
-    {
-        $newItem = array($key => $this->set($value));
-        $this->items = array_merge($newItem, $this->items);
-    }
-
-    private function getSingle($key) 
-    {
-        return $this->exists($key) ? $this->items[$key] : null;
-    }
-
-    private function getRecursively($keys)
-    {
-        return array_reduce($this->normalizeKeys($keys), function($carry, $item) {
-            return ($this->isAok($carry)) ? $carry->getSingle($item) : null;
-        }, $this);
-    }
-
-    private function normalizeKeys($keys)
-    {
-        return is_array($keys) ?: explode('.', $keys);
-    }
-
-    private function constructRecursively($data)
-    {
-        foreach($data as $key => $item) {
-            $this->append($item, $key);
-        }
-    }
+    /**
+     * Converts the entire nested object graph into a plain array 
+     *
+     * @access public
+     * @return array
+    */
 
     public function toArray()
     {
@@ -109,5 +141,138 @@ class ArrayOk implements ArrayAccess
         }
 
         return $items;
+    }
+
+
+    /**
+     * Sets the given value as either a primitive, or as a nested ArrayOk object if the given value is an array 
+     *
+     * @param mixed $value
+     * @access private
+     * @return mixed
+    */
+
+    private function set($value) 
+    {
+        return is_array($value) ? new ArrayOk($value) : $value;
+    }
+
+
+    /**
+     * Pushes a keyless item onto the end of the object
+     *
+     * @param mixed $value
+     * @access private
+     * @return void
+    */
+
+    private function push($value)
+    {
+        $this->items[] = $this->set($value);
+    }
+
+
+    /**
+     * Pushes a keyed item onto the end of the object 
+     *
+     * @param string $key
+     * @param mixed $value
+     * @access private
+     * @return void
+    */
+
+    private function pushKey($key, $value)
+    {
+        $this->items[$key] = $this->set($value);
+    }
+
+
+    /**
+     * Pushes a keyless item onto the beginning of the object 
+     *
+     * @param mixed $value
+     * @access private
+     * @return void
+    */
+
+    private function unshift($value)
+    {
+        array_unshift($this->items, $this->set($value));
+    }
+
+
+    /**
+     * Pushes a keyed item onto the beginning of the object 
+     *
+     * @param string $key
+     * @param mixed $value
+     * @access private
+     * @return void
+    */
+
+    private function unshiftKey($key, $value)
+    {
+        $newItem = array($key => $this->set($value));
+        $this->items = array_merge($newItem, $this->items);
+    }
+
+
+    /**
+     * Returns a single, first level item from the object, if it exists 
+     *
+     * @param string $key
+     * @access private
+     * @return mixed
+    */
+
+    private function getSingle($key) 
+    {
+        return $this->exists($key) ? $this->items[$key] : null;
+    }
+
+
+    /**
+     * Recurses through the nested object graph to get the value of the furthest key 
+     *
+     * @param mixed string|array $keys
+     * @access private
+     * @return mixed
+    */
+
+    private function getRecursively($keys)
+    {
+        return array_reduce($this->normalizeKeys($keys), function($carry, $item) {
+            return ($this->isAok($carry)) ? $carry->getSingle($item) : null;
+        }, $this);
+    }
+
+
+    /**
+     * Converts a dot notation string to an array, or passes a given array through
+     *
+     * @param mixed string|array $keys
+     * @access private
+     * @return array
+    */
+
+    private function normalizeKeys($keys)
+    {
+        return is_array($keys) ?: explode('.', $keys);
+    }
+
+
+    /**
+     * Recurses through a given array to create a nested set of ArrayOk objects
+     *
+     * @param array $data
+     * @access private
+     * @return void
+    */
+
+    private function constructRecursively($data)
+    {
+        foreach($data as $key => $item) {
+            $this->append($item, $key);
+        }
     }
 }
