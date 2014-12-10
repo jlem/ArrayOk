@@ -1,4 +1,4 @@
-<?php
+<?php namespace Jlem\ArrayOk
 
 class ArrayOk implements ArrayAccess
 {
@@ -111,41 +111,3 @@ class ArrayOk implements ArrayAccess
         return $items;
     }
 }
-
-trait ArrayAccessTrait
-{
-    public function offsetExists($offset) {
-        return $this->exists($offset);
-    }
-
-    public function offsetGet($offset) {
-        return $this->get($offset);
-    }
-
-    public function offsetSet($offset, $value) {
-        $this->append($value, $offset);
-    }
-
-    public function offsetUnset($offset) {
-        $this->remove($offset);
-    }
-
-}
-
-$arr = [
-    'one' => [
-        'two' => [
-            'three' => 'four',
-            'what' => 'now'
-        ]
-    ],
-    'apple' => 'orange', 
-    'happy' => 'gilmore'
-];
-
-
-$aok = new ArrayOk($arr);
-$aok->append('myval', 'optionalkey');
-$data = $aok->toArray();
-ksort($data);
-var_dump($data);

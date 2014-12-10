@@ -1,0 +1,18 @@
+{
+    "name": "jlem/arrayok",
+    "description": "A simple object wrapper/decorator for arrays",
+    "authors": [
+        {
+            "name": "Jon",
+            "email": "agmlauncher@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jlem\\ArrayOk\\": "src/"
+        }
+    }
+}
