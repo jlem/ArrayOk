@@ -1,6 +1,6 @@
-<?php namespace Jlem\ArrayOk
+<?php namespace Jlem\ArrayOk;
 
-class ArrayOk implements ArrayAccess
+class ArrayOk implements \ArrayAccess
 {
     use ArrayAccessTrait;
 
