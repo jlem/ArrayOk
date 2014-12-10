@@ -11,7 +11,7 @@ $config = [
         'two' => [
             'three => 'four'
         ]
-    ]
+    ],
     'Hello' => 'World!',
     'Foo' => 'Bar'
 ];
