@@ -9,7 +9,7 @@ API:
 $config = [
     'one' => [
         'two' => [
-            'three => 'four'
+            'three' => 'four'
         ]
     ],
     'Hello' => 'World!',
