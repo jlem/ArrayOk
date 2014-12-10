@@ -22,6 +22,7 @@ class ArrayOk implements \ArrayAccess
 
     public function get($keys = null)
     {
+        var_dump($keys);
         return ($keys) ? $this->getRecursively($keys) : $this->items;
     }
 
@@ -148,11 +149,11 @@ class ArrayOk implements \ArrayAccess
      * Sets the given value as either a primitive, or as a nested ArrayOk object if the given value is an array 
      *
      * @param mixed $value
-     * @access private
+     * @access protected
      * @return mixed
     */
 
-    private function set($value) 
+    protected function set($value) 
     {
         return is_array($value) ? new ArrayOk($value) : $value;
     }
@@ -162,11 +163,11 @@ class ArrayOk implements \ArrayAccess
      * Pushes a keyless item onto the end of the object
      *
      * @param mixed $value
-     * @access private
+     * @access protected
      * @return void
     */
 
-    private function push($value)
+    protected function push($value)
     {
         $this->items[] = $this->set($value);
     }
@@ -177,11 +178,11 @@ class ArrayOk implements \ArrayAccess
      *
      * @param string $key
      * @param mixed $value
-     * @access private
+     * @access protected
      * @return void
     */
 
-    private function pushKey($key, $value)
+    protected function pushKey($key, $value)
     {
         $this->items[$key] = $this->set($value);
     }
@@ -191,11 +192,11 @@ class ArrayOk implements \ArrayAccess
      * Pushes a keyless item onto the beginning of the object 
      *
      * @param mixed $value
-     * @access private
+     * @access protected
      * @return void
     */
 
-    private function unshift($value)
+    protected function unshift($value)
     {
         array_unshift($this->items, $this->set($value));
     }
@@ -206,11 +207,11 @@ class ArrayOk implements \ArrayAccess
      *
      * @param string $key
      * @param mixed $value
-     * @access private
+     * @access protected
      * @return void
     */
 
-    private function unshiftKey($key, $value)
+    protected function unshiftKey($key, $value)
     {
         $newItem = array($key => $this->set($value));
         $this->items = array_merge($newItem, $this->items);
@@ -221,11 +222,11 @@ class ArrayOk implements \ArrayAccess
      * Returns a single, first level item from the object, if it exists 
      *
      * @param string $key
-     * @access private
+     * @access protected
      * @return mixed
     */
 
-    private function getSingle($key) 
+    protected function getSingle($key) 
     {
         return $this->exists($key) ? $this->items[$key] : null;
     }
@@ -235,12 +236,13 @@ class ArrayOk implements \ArrayAccess
      * Recurses through the nested object graph to get the value of the furthest key 
      *
      * @param mixed string|array $keys
-     * @access private
+     * @access protected
      * @return mixed
     */
 
-    private function getRecursively($keys)
+    protected function getRecursively($keys)
     {
+        var_dump($keys);
         return array_reduce($this->normalizeKeys($keys), function($carry, $item) {
             return ($this->isAok($carry)) ? $carry->getSingle($item) : null;
         }, $this);
@@ -251,13 +253,14 @@ class ArrayOk implements \ArrayAccess
      * Converts a dot notation string to an array, or passes a given array through
      *
      * @param mixed string|array $keys
-     * @access private
+     * @access protected
      * @return array
     */
 
-    private function normalizeKeys($keys)
+    protected function normalizeKeys($keys)
     {
-        return is_array($keys) ?: explode('.', $keys);
+        var_dump($keys);exit;
+        return is_array($keys) ? $keys : explode('.', $keys);
     }
 
 
@@ -265,11 +268,11 @@ class ArrayOk implements \ArrayAccess
      * Recurses through a given array to create a nested set of ArrayOk objects
      *
      * @param array $data
-     * @access private
+     * @access protected
      * @return void
     */
 
-    private function constructRecursively($data)
+    protected function constructRecursively($data)
     {
         foreach($data as $key => $item) {
             $this->append($item, $key);
