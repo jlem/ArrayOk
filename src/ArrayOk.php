@@ -140,7 +140,7 @@ class ArrayOk implements ArrayAccess
             $items[$key] = $this->isAok($item) ? $item->toArray() : $item;
         }
 
-        return $items;
+        return (array)$items;
     }
 
 
