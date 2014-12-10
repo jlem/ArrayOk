@@ -19,7 +19,7 @@ $config = [
 ];
 
 
-// Create the new object
+// Wrap it
 
 $aok = new Jlem\ArrayOk\ArrayOk($config);       // Builds a nested object graph of ArrayOk objects for each child array in $config
 
