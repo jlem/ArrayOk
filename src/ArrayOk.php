@@ -6,7 +6,7 @@ class ArrayOk implements \ArrayAccess
 
     public $items;
 
-    public function __construct(array $items)
+    public function __construct(array $items = array())
     {
         $this->constructRecursively($items);
     }
