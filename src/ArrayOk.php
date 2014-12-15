@@ -167,7 +167,13 @@ class ArrayOk implements \ArrayAccess
     public function toArray()
     {
         $items = [];
-        foreach($this->get() as $key => $item) {
+        $results = $this->get();
+        
+        if (!$results) {
+            return array();
+        }
+
+        foreach($results as $key => $item) {
             $items[$key] = $this->isAok($item) ? $item->toArray() : $item;
         }
 
