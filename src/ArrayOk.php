@@ -114,6 +114,19 @@ class ArrayOk implements \ArrayAccess
 
 
     /**
+     * Checks to see if the object is empty
+     *
+     * @return  bool
+     * @todo  recrusive seek
+     */
+    
+    public function empty()
+    {
+        return empty($this->items);
+    }
+
+
+    /**
      * Checks to see if the given value/objet is also an ArrayOk object 
      *
      * @param mixed $object
