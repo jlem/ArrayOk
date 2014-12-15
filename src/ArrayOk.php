@@ -156,6 +156,12 @@ class ArrayOk implements \ArrayAccess
         return $object instanceof $this; 
     }
 
+    public function itemIsAok($item)
+    {
+        $object = $this->get($item);
+        return $this->isAok($object);
+    }
+
 
     /**
      * Converts the entire nested object graph into a plain array 
