@@ -24,6 +24,20 @@ class ArrayOk implements \ArrayAccess
     {
         return ($keys) ? $this->getRecursively($keys) : $this->items;
     }
+    
+
+
+    public function reverse($returnAsObject = false)
+    {
+        $items = $this->items->toArray();
+        $items = array_reverse($items);
+
+        if ($returnAsObject) {
+            $items = new ArrayOk($items);
+        }
+
+        return $items;
+    }
 
 
     /**
