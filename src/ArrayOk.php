@@ -62,9 +62,30 @@ class ArrayOk implements \ArrayAccess
      * @return array
     */
 
-    public function sortOrder(array $input)
+    public function orderBy(array $input, $flipInput = true)
     {
-        return $this->items = array_replace(array_flip($input), $this->items);
+        if ($flipInput) {
+            $input = array_flip($input);
+        }
+
+        return $this->items = array_replace($input, $this->items);
+    }
+
+
+    public function orderByAndGetIntersection(array $input, $flipInput = true)
+    {
+        return $this->instersectKeys($this->orderBy($input, $flipInput));
+    }
+
+
+    public function intersectKeys(array $input)
+    {
+        return array_intersect_key($this->items, $input);
+    }
+
+    public function intersect(array $input)
+    {
+        return array_intersect($this->items, $input);
     }
 
 
