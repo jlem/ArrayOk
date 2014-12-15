@@ -120,8 +120,12 @@ class ArrayOk implements \ArrayAccess
      * @todo  recrusive seek
      */
     
-    public function empty()
+    public function isEmpty($key = null)
     {
+        if ($key) {
+            return empty($this->items[$key]);
+        }
+        
         return empty($this->items);
     }
 
