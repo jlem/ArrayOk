@@ -22,7 +22,6 @@ class ArrayOk implements \ArrayAccess
 
     public function get($keys = null)
     {
-        var_dump($keys);
         return ($keys) ? $this->getRecursively($keys) : $this->items;
     }
 
@@ -125,7 +124,7 @@ class ArrayOk implements \ArrayAccess
         if ($key) {
             return empty($this->items[$key]);
         }
-        
+
         return empty($this->items);
     }
 
