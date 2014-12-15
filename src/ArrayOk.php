@@ -74,7 +74,12 @@ class ArrayOk implements \ArrayAccess
 
     public function orderByAndGetIntersection(array $input, $flipInput = true)
     {
-        $this->orderBy($input, $flipInput);
+        if ($flipInput) {
+            $input = array_flip($input);
+        }
+
+        $this->orderBy($input, false); // already flipped or false by definition
+
         return $this->intersectKeys($input);
     }
 
