@@ -29,7 +29,7 @@ class ArrayOk implements \ArrayAccess
 
     public function reverse($returnAsObject = false)
     {
-        $items = $this->items->toArray();
+        $items = $this->toArray();
         $items = array_reverse($items);
 
         if ($returnAsObject) {
