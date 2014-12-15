@@ -127,20 +127,6 @@ class ArrayOk implements \ArrayAccess
 
 
     /**
-     * Checks to see if the objet contains the given key 
-     *
-     * @param string $key
-     * @access public
-     * @return bool
-    */
-
-    public function existsAndIsNotEmpty($key)
-    {
-        if (isset($this->items[$key])
-    }
-
-
-    /**
      * Checks to see if the given value/objet is also an ArrayOk object 
      *
      * @param mixed $object
