@@ -127,6 +127,20 @@ class ArrayOk implements \ArrayAccess
 
 
     /**
+     * Checks to see if the objet contains the given key 
+     *
+     * @param string $key
+     * @access public
+     * @return bool
+    */
+
+    public function existsAndIsNotEmpty($key)
+    {
+        if (isset($this->items[$key])
+    }
+
+
+    /**
      * Checks to see if the given value/objet is also an ArrayOk object 
      *
      * @param mixed $object
@@ -255,7 +269,6 @@ class ArrayOk implements \ArrayAccess
 
     protected function getRecursively($keys)
     {
-        var_dump($keys);
         return array_reduce($this->normalizeKeys($keys), function($carry, $item) {
             return ($this->isAok($carry)) ? $carry->getSingle($item) : null;
         }, $this);
@@ -272,7 +285,6 @@ class ArrayOk implements \ArrayAccess
 
     protected function normalizeKeys($keys)
     {
-        var_dump($keys);exit;
         return is_array($keys) ? $keys : explode('.', $keys);
     }
 
