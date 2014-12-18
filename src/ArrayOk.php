@@ -57,13 +57,15 @@ class ArrayOk implements \ArrayAccess
     /**
      * Allows you to explicitly set the order of the array using another array whose values match the keys of the current object's keys 
      *
-     * @param array $input
+     * @param mixed array|string $input
      * @access public
      * @return array
     */
 
-    public function orderBy(array $input, $flipInput = true)
+    public function orderBy($input, $flipInput = true)
     {
+        $input = $this->normalizeKeys($input);
+
         if ($flipInput) {
             $input = array_flip($input);
         }
@@ -72,8 +74,10 @@ class ArrayOk implements \ArrayAccess
     }
 
 
-    public function orderByAndGetIntersection(array $input, $flipInput = true)
+    public function orderByAndGetIntersection($input, $flipInput = true)
     {
+        $input = $this->normalizeKeys($input);
+
         if ($flipInput) {
             $input = array_flip($input);
         }
