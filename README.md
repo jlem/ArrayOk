@@ -6,7 +6,8 @@ ArrayOk is *not* intended to be used as a Collection wrapper
 
 ```php
 $aok-> new ArrayOk(array $config_array);
-$aok->get(string|array $keys = null)             // uses keys to get nested values
+
+$aok->get(string|array $keys = null)             // uses key lookup to get nested values. If string, make sure to use dot notation.
 $aok->reverse($returnAsObject = false)           // Reverses the order of the array, returns as new ArrayOk if param is true
 $aok->orderBy(string|array $input, $flipInput = true)   // Reorders the contents by the given input. $flipInput determines if given input should be array_flip()'d
 $aok->orderByAndGetIntersection(string|array $input, $flipInput = true)   // Reorders the contents by the given input and returns only the intersection
@@ -83,7 +84,14 @@ $aok->remove('Foo')                         // removes the 'Foo' element from th
 
 // Sorting
 
-$aok->sortOrder(['Foo', 'Hello', 'one'])      // explicitly changes the order of the array to match the given input array
+$aok->orderBy(['Foo', 'Hello', 'one'])      // explicitly changes the order of the array to match the given input array
+$aok->orderBy('Foo.Hello.one');             // ... or use dot notation to represent the order
+$aok->orderBy(['Foo' => 'f', 'Hello' => 'h', 'one' => 'o'], false) // Pass in "false" if you don't want the array keys and values flipped (e.g. if the array keys are already correct)
+// $aok->orderBy('Foo.Hello.one', false)    // NOT RECOMMENDED. Passing in false with dot notation will keep the keys numerically indexed
+
+$aok->orderByAndGetIntersection(['Foo', 'one'])    // Returns a new array containing only 'Foo' and 'one' values, in that order, leaving out 'Hello'
+$aok->orderByAndGetIntersection(['Foo' => 'f', 'one' => 'o'], false)    // Use false to preserve array key/value positions (e.g. don't flip them)
+$aok->orderByAndGetIntersection('Foo.one')         // ... dot notation allowed
 
 
 // Misc
