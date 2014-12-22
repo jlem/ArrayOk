@@ -81,7 +81,7 @@ class ArrayOk implements \ArrayAccess
             $input = array_flip($input);
         }
 
-        return array_intersect_key($this->items, $input);
+        return new ArrayOk(array_intersect_key($this->items, $input));
     }
 
     public function intersect(array $input)
