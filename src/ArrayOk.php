@@ -73,7 +73,18 @@ class ArrayOk implements \ArrayAccess
         return $this->items = array_replace($input, $this->items);
     }
 
-    public function intersectKeys(array $input, $flipInput = true)
+
+
+    /**
+     * Returns a new ArrayOk containing and intersection of its keys and another array's keys 
+     *
+     * @param mixed array|string $input
+     * @param boolean $flipInput
+     * @access public
+     * @return ArrayOk
+    */
+
+    public function intersectKeys($input, $flipInput = true)
     {
         $input = $this->normalizeKeys($input);
 
