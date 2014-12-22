@@ -70,26 +70,15 @@ class ArrayOk implements \ArrayAccess
             $input = array_flip($input);
         }
 
-        return $this->items = new ArrayOk(array_replace($input, $this->items));
+        return $this->items = array_replace($input, $this->items);
     }
 
-
-    public function orderByAndGetIntersection($input, $flipInput = true)
+    public function intersectKeys(array $input, $flipInput = true)
     {
-        $input = $this->normalizeKeys($input);
-
         if ($flipInput) {
             $input = array_flip($input);
         }
 
-        $this->orderBy($input, false); // already flipped or false by definition
-
-        return new ArrayOk($this->intersectKeys($input));
-    }
-
-
-    public function intersectKeys(array $input)
-    {
         return array_intersect_key($this->items, $input);
     }
 
