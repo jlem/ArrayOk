@@ -75,6 +75,8 @@ class ArrayOk implements \ArrayAccess
 
     public function intersectKeys(array $input, $flipInput = true)
     {
+        $input = $this->normalizeKeys($input);
+
         if ($flipInput) {
             $input = array_flip($input);
         }
