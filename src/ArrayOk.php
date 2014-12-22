@@ -70,7 +70,7 @@ class ArrayOk implements \ArrayAccess
             $input = array_flip($input);
         }
 
-        return $this->items = array_replace($input, $this->items);
+        return $this->items = new ArrayOk(array_replace($input, $this->items));
     }
 
 
@@ -84,7 +84,7 @@ class ArrayOk implements \ArrayAccess
 
         $this->orderBy($input, false); // already flipped or false by definition
 
-        return $this->intersectKeys($input);
+        return new ArrayOk($this->intersectKeys($input));
     }
 
 
