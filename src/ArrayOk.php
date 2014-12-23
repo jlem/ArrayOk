@@ -318,7 +318,7 @@ class ArrayOk implements \ArrayAccess
     protected function getRecursively($keys)
     {
         return array_reduce($this->normalizeKeys($keys), function($carry, $item) {
-            return ($carry instanceof ArrayOk)) ? $carry->getSingle($item) : null;
+            return ($carry instanceof ArrayOk) ? $carry->getSingle($item) : null;
         }, $this);
     }
 
