@@ -24,12 +24,13 @@ $replacement = array(
 
 
 $newOrder = 'luke,yoda';
+$intersect = array('luke', 'yoda');
 
-$context2 = ArrayOk::replace($context, $replacement);
+$context2 = ArrayOk::order($context, $newOrder, false);
 $context = new ArrayOk($context);
-$context->replace($replacement);
+$context->order($newOrder, false);
 
 //$results = Proxy::order($context, $newOrder);
 
-var_dump($context);
 var_dump($context2);
+var_dump($context);

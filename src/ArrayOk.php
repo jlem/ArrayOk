@@ -20,21 +20,24 @@ class ArrayOk implements \ArrayAccess
         return $this->update(Proxy::flip($this->items));
     }
 
-    protected function order($byThese, $trim = true)
+    protected function order($byThese, $cut = true)
     {
-        return $this->update(Proxy::order($this, $byThese, $trim));
+        return $this->update(Proxy::order($this, $byThese, $cut));
     }
 
     protected function replace(array $withThese)
     {
-        return $this->update(Proxy::replace($this->items, func_get_args()));
+        return $this->update(Proxy::replace($this->items, $withThese));
     }
 
-    protected function intersectKey(array $withThese)
+    protected function intersectKeys(array $withThese)
     {
-        $args = func_get_args();
-        $args[] = $this->items;
-        return $this->update(call_user_func_array(__NAMESPACE__.'\Proxy::intersectKeys', array_reverse($args)));
+        return $this->update(Proxy::intersectKeys($this->items, $withThese));
+    }
+
+    protected function cut(array $withThese)
+    {
+        return $this->update(Proxy::cut($this->items, $withThese));
     }
 
 
@@ -110,7 +113,7 @@ class ArrayOk implements \ArrayAccess
      * @return ArrayOk
     */
 
-    public function intersectKeys($input, $flipInput = true)
+    public function intersectKey($input, $flipInput = true)
     {
         $input = $this->normalizeKeys($input);
 

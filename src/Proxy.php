@@ -7,12 +7,16 @@ class Proxy
         return new ArrayOk(array_flip($input));
     }
 
-    public static function order($target, $sequence, $trim = true)
+    public static function order($target, $sequence, $cut = true)
     {
         $target = static::normalizeArray($target);
         $sequence = static::normalizeSequence($sequence);
-        $target->replace($sequence->flip()->toArray());
-        return $trim ? $target->intersectKey($sequence->toArray()) : $target;
+
+        if ($cut) {
+            $target->cut($sequence->items);
+        }
+
+        return $sequence->flip()->replace($target->items);
     }
 
     public static function intersect(array $these, array $andThese)
@@ -22,15 +26,17 @@ class Proxy
 
     public static function intersectKeys(array $these, array $andThese)
     {
-        return call_user_func_array('array_intersect_key', func_get_args());
+        return new ArrayOk(call_user_func_array('array_intersect_key', func_get_args()));
+    }
+
+    public static function cut(array $these, array $andThese)
+    {
+        return static::intersectKeys($these, static::flip($andThese)->items);
     }
 
     public static function replace(array $toBeReplaced, array $replaceWith)
     {
-        var_dump(func_get_args());
-        $stack = func_get_arg(1);
-        $stack[] = func_get_arg(0);
-        return call_user_func_array('array_replace', array_reverse($stack));
+        return new ArrayOk(call_user_func_array('array_replace', func_get_args()));
     }
 
     public static function isAok($data)
