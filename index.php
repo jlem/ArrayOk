@@ -16,11 +16,18 @@ $context = array(
 	'luke' => 'five'
 );
 
+$replacement = array(
+	'vader' => 'vvv', 
+	'yoda' => 'yyy',
+	'luke' => 'lll'
+);
+
+
 $newOrder = 'luke,yoda';
 
-$context2 = ArrayOk::order($context, $newOrder);
+$context2 = ArrayOk::replace($context, $replacement);
 $context = new ArrayOk($context);
-$context->order($newOrder);
+$context->replace($replacement);
 
 //$results = Proxy::order($context, $newOrder);
 

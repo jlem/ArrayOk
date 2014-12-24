@@ -27,9 +27,7 @@ class ArrayOk implements \ArrayAccess
 
     protected function replace(array $withThese)
     {
-        $args = func_get_args();
-        $args[] = $this->items;
-        return $this->update(call_user_func_array(__NAMESPACE__.'\Proxy::replace', $args));
+        return $this->update(Proxy::replace($this->items, func_get_args()));
     }
 
     protected function intersectKey(array $withThese)

@@ -25,9 +25,12 @@ class Proxy
         return call_user_func_array('array_intersect_key', func_get_args());
     }
 
-    public static function replace(array $these, array $withThese)
+    public static function replace(array $toBeReplaced, array $replaceWith)
     {
-        return call_user_func_array('array_replace', func_get_args());
+        var_dump(func_get_args());
+        $stack = func_get_arg(1);
+        $stack[] = func_get_arg(0);
+        return call_user_func_array('array_replace', array_reverse($stack));
     }
 
     public static function isAok($data)
