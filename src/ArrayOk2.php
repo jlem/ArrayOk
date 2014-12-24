@@ -1,42 +1,14 @@
 <?php namespace Jlem\ArrayOk;
 
-class ArrayOk implements \ArrayAccess
+class ArrayOk2 implements \ArrayAccess
 {
+    use ArrayAccessTrait;
+
     public $items;
 
     public function __construct(array $items = array())
     {
         $this->constructRecursively($items);
-    }
-
-    protected function update($items)
-    {
-        $this->items = Proxy::isAok($items) ? $items->items : $items;
-        return $this;
-    }
-
-    protected function flip()
-    {
-        return $this->update(Proxy::flip($this->items));
-    }
-
-    protected function order($byThese, $trim = true)
-    {
-        return $this->update(Proxy::order($this, $byThese, $trim));
-    }
-
-    protected function replace(array $withThese)
-    {
-        $args = func_get_args();
-        $args[] = $this->items;
-        return $this->update(call_user_func_array(__NAMESPACE__.'\Proxy::replace', $args));
-    }
-
-    protected function intersectKey(array $withThese)
-    {
-        $args = func_get_args();
-        $args[] = $this->items;
-        return $this->update(call_user_func_array(__NAMESPACE__.'\Proxy::intersectKeys', array_reverse($args)));
     }
 
 
@@ -233,7 +205,7 @@ class ArrayOk implements \ArrayAccess
 
     public function toArray()
     {
-        $items = array();
+        $items = [];
         $results = $this->get();
         
         if (!$results) {
@@ -378,31 +350,5 @@ class ArrayOk implements \ArrayAccess
         foreach($data as $key => $item) {
             $this->append($item, $key);
         }
-    }
-
-    public function offsetExists($offset) {
-        return $this->exists($offset);
-    }
-
-    public function offsetGet($offset) {
-        return $this->get($offset);
-    }
-
-    public function offsetSet($offset, $value) {
-        $this->append($value, $offset);
-    }
-
-    public function offsetUnset($offset) {
-        $this->remove($offset);
-    }
-
-    public static function __callStatic($method, $args)
-    {
-        return call_user_func_array(array(new Proxy, $method), $args);
-    }
-
-    public function __call($method, $args)
-    {
-        return call_user_func_array(array($this, $method), $args);
     }
 }
