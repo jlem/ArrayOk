@@ -22,7 +22,7 @@ class ArrayOk implements \ArrayAccess
 
     protected function order($byThese, $cut = true)
     {
-        return $this->update(Proxy::order($this, $byThese, $cut));
+        return $this->update(Proxy::order($this->items, $byThese, $cut));
     }
 
     protected function replace(array $withThese)

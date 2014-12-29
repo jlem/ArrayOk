@@ -13,7 +13,6 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
     public function testFlip()
     {
-
         $input = array(
             'yoda' => 'master',
             'luke' => 'jedi',
@@ -28,7 +27,7 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
         $output = Proxy::flip($input);
 
-        $this->assertEquals($expected, $output->items);
+        $this->assertSame($expected, $output->items);
     }
 
     public function testReplace()
@@ -53,7 +52,7 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
         $output = Proxy::replace($initial, $replacement);
 
-        $this->assertEquals($expected, $output->items);
+        $this->assertSame($expected, $output->items);
     }
 
 
@@ -77,7 +76,7 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
         $output = Proxy::intersectKeys($initial, $intersect);
 
-        $this->assertEquals($expected, $output->items);
+        $this->assertSame($expected, $output->items);
     }
 
     public function testCut()
@@ -97,7 +96,7 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
         $output = Proxy::cut($initial, $cut);
 
-        $this->assertEquals($expected, $output->items);
+        $this->assertSame($expected, $output->items);
     }
 
     public function testOrderWithoutCut()
@@ -116,8 +115,49 @@ class ProxyTest extends PHPUnit_Framework_Testcase
             'yoda' => 'master'
         );
 
-        $output = Proxy::cut($initial, $sequence, false);
+        $actual = Proxy::order($initial, $sequence, false);
 
-        $this->assertEquals($expected, $output->items);
+        $this->assertSame($expected, $actual->items);
+    }
+
+    public function testOrderWithoutCutAndShortSequence()
+    {
+        $initial = array(
+            'luke' => 'jedi',
+            'vader' => 'sith',
+            'yoda' => 'master'
+        );
+
+        $sequence = array('yoda', 'luke');
+
+        $expected = array(
+            'yoda' => 'master',
+            'luke' => 'jedi',
+            'vader' => 'sith'
+        );
+
+        $actual = Proxy::order($initial, $sequence, false);
+
+        $this->assertSame($expected, $actual->items);
+    }
+
+    public function testOrderWithCut()
+    {
+        $initial = array(
+            'luke' => 'jedi',
+            'vader' => 'sith',
+            'yoda' => 'master'
+        );
+
+        $sequence = array('yoda', 'luke');
+
+        $expected = array(
+            'yoda' => 'master',
+            'luke' => 'jedi'
+        );
+
+        $actual = Proxy::order($initial, $sequence);
+
+        $this->assertSame($expected, $actual->items);
     }
 }

@@ -9,19 +9,14 @@ class Proxy
 
     public static function order($target, $sequence, $cut = true)
     {
-        $target = static::normalizeArray($target);
         $sequence = static::normalizeSequence($sequence);
+        $sequence = array_flip($sequence);
 
         if ($cut) {
-            $target->cut($sequence->items);
+            $target = array_intersect_key($target, $sequence);
         }
 
-        return $sequence->flip()->replace($target->items);
-    }
-
-    public static function intersect(array $these, array $andThese)
-    {
-        return call_user_func_array('array_intersect', func_get_args());
+        return static::replace($sequence, $target);
     }
 
     public static function intersectKeys(array $these, array $andThese)
@@ -31,7 +26,7 @@ class Proxy
 
     public static function cut(array $these, array $andThese)
     {
-        return static::intersectKeys($these, static::flip($andThese)->items);
+        return static::intersectKeys($these, array_flip($andThese));
     }
 
     public static function replace(array $toBeReplaced, array $replaceWith)
@@ -44,22 +39,9 @@ class Proxy
         return $data instanceof ArrayOk;
     }
 
-    public static function isArray($data)
-    {
-        return is_array($data);
-    }
-
     protected static function normalizeSequence($sequence)
     {
-        if (static::isAok($sequence)) {
-            return $sequence;
-        }
-
-        if (static::isArray($sequence)) {
-            return new ArrayOk($sequence);
-        }
-
-        return new ArrayOk(static::commasToArray($sequence));
+        return is_array($sequence) ? $sequence : static::commasToArray($sequence);
     }
 
     protected static function commasToArray($string)
