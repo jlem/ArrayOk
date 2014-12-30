@@ -9,6 +9,13 @@ class ArrayOk implements \ArrayAccess
         $this->constructRecursively($items);
     }
 
+    public function first()
+    {
+        reset($this->items);
+        $key = key($this->items);
+        return $this[$key];
+    }
+
     protected function update($items)
     {
         $this->items = Proxy::isAok($items) ? $items->items : $items;
@@ -23,6 +30,36 @@ class ArrayOk implements \ArrayAccess
     protected function order($byThese, $cut = true)
     {
         return $this->update(Proxy::order($this->items, $byThese, $cut));
+    }
+
+    protected function replaceRecursive(ArrayOk $withThese, $default = false)
+    {
+        if ($default) {
+            $this->constructRecursively(array_replace_recursive($this->toArray(), $withThese->toArray()));
+        } else {
+            $this->replaceRecursiveNumeric($withThese);
+        }
+    }
+
+    protected function replaceRecursiveNumeric($withThese) 
+    {
+        foreach ($withThese->items as $key => $value) 
+        {
+            if (!isset($this[$key])) {
+                $this[$key] = new ArrayOk(array());
+            }
+            
+            if ($this->isAok($value) && $value->isAssociativeArray()) {
+                $this[$key]->replaceRecursiveNumeric($value);
+            } else {
+                $this[$key] = $value;
+            }
+        }
+    }
+
+    protected function isAssociativeArray()
+    {
+        return Proxy::isAssociativeArray($this->items);
     }
 
     protected function replace(array $withThese)

@@ -34,6 +34,11 @@ class Proxy
         return new ArrayOk(call_user_func_array('array_replace', func_get_args()));
     }
 
+    public static function isAssociativeArray($array)
+    {
+        return (bool)count(array_filter(array_keys($array), 'is_string'));
+    }
+
     public static function isAok($data)
     {
         return $data instanceof ArrayOk;
