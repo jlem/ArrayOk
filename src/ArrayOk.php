@@ -4,7 +4,7 @@ class ArrayOk implements \ArrayAccess
 {
     public $items;
 
-    public function __construct(array $items = array())
+    public function __construct($items = array())
     {
         $this->constructRecursively($items);
     }
@@ -88,7 +88,7 @@ class ArrayOk implements \ArrayAccess
 
     public function get($keys = null)
     {
-        return ($keys) ? $this->getRecursively($keys) : $this->items;
+        return ($keys) ? $this->getRecursively($keys) : $this;
     }
     
 
@@ -369,7 +369,9 @@ class ArrayOk implements \ArrayAccess
 
     protected function getSingle($key) 
     {
-        return $this->exists($key) ? $this->items[$key] : null;
+        if ($this->exists($key)) {
+            return is_array($this->items[$key]) ? new ArrayOk($this->items[$key]) : $this->items[$key];
+        }
     }
 
 
@@ -413,8 +415,12 @@ class ArrayOk implements \ArrayAccess
 
     protected function constructRecursively($data)
     {
-        foreach($data as $key => $item) {
-            $this->append($item, $key);
+        if ($this->isAok($data)) {
+            $this->items = $data->items;
+        } else {
+            foreach($data as $key => $item) {
+                $this->append($item, $key);
+            }
         }
     }
 
