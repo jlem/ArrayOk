@@ -90,8 +90,17 @@ class ArrayOk implements \ArrayAccess
     {
         return ($keys) ? $this->getRecursively($keys) : $this;
     }
-    
 
+    public function getArray($keys)
+    {
+        $results = $this->get($keys);
+        return $this->isAok($results) ? $results->toArray() : $results;
+    }
+
+    public function getJson($keys)
+    {
+        return Proxy::json($this->getArray($keys));
+    }
 
     public function reverse($returnAsObject = false)
     {
