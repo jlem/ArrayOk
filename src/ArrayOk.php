@@ -287,6 +287,19 @@ class ArrayOk implements \ArrayAccess
 
 
     /**
+     * Converts the ArrayOk object to Json
+     *
+     * @access public
+     * @return string
+    */
+
+    public function toJson()
+    {
+        return json_encode($this->toArray());
+    }
+
+
+    /**
      * Sets the given value as either a primitive, or as a nested ArrayOk object if the given value is an array 
      *
      * @param mixed $value

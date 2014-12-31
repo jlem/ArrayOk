@@ -44,6 +44,12 @@ class Proxy
         return $data instanceof ArrayOk;
     }
 
+    public static function json($data)
+    {
+        $data = new ArrayOk($data); // Wrap it as an ArrayOk object in case it's only a partial object
+        return $data->toJson();
+    }
+
     protected static function normalizeSequence($sequence)
     {
         return is_array($sequence) ? $sequence : static::commasToArray($sequence);

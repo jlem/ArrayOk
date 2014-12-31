@@ -160,4 +160,64 @@ class ProxyTest extends PHPUnit_Framework_Testcase
 
         $this->assertSame($expected, $actual->items);
     }
+
+    public function testJsonOnArrayOk()
+    {
+        $initial = new ArrayOk(array(
+            'luke' => 'jedi',
+            'vader' => 'sith',
+            'yoda' => 'master',
+            'ships' => array(
+                'falcon',
+                'deathstar',
+                'xwing'
+            )
+        ));
+
+        $expected = '{"luke":"jedi","vader":"sith","yoda":"master","ships":["falcon","deathstar","xwing"]}'; 
+
+        $actual = Proxy::json($initial);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testJsonOnPlainArray()
+    {
+        $initial = array(
+            'luke' => 'jedi',
+            'vader' => 'sith',
+            'yoda' => 'master',
+            'ships' => array(
+                'falcon',
+                'deathstar',
+                'xwing'
+            )
+        );
+
+        $expected = '{"luke":"jedi","vader":"sith","yoda":"master","ships":["falcon","deathstar","xwing"]}'; 
+
+        $actual = Proxy::json($initial);
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testJsonOnPartialArrayOk()
+    {
+        $initial = new ArrayOk(array(
+            'luke' => 'jedi',
+            'vader' => 'sith',
+            'yoda' => 'master',
+            'ships' => array(
+                'falcon',
+                'deathstar',
+                'xwing'
+            )
+        ));
+
+        $expected = '{"luke":"jedi","vader":"sith","yoda":"master","ships":["falcon","deathstar","xwing"]}'; 
+
+        $actual = Proxy::json($initial->items);
+
+        $this->assertSame($expected, $actual);
+    }
 }
