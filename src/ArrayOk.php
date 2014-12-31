@@ -272,7 +272,7 @@ class ArrayOk implements \ArrayAccess
     public function toArray()
     {
         $items = array();
-        $results = $this->get();
+        $results = $this->get()->items;
         
         if (!$results) {
             return array();
